@@ -55,6 +55,66 @@ function mostrarViaje($viaje){
 }
 
 /**
+ * Menu modificar Viaje
+ */
+function menuModificarViaje(){
+    echo "[1] Modificar el código. \n";
+    echo "[2] Modificar el destino. \n";
+    echo "[3] Modificar cantidad máxima de pasajeros. \n";
+    echo "[4] Salir. \n";
+    do {
+        echo "Elija una opción: ";
+        $opcion = trim(fgets(STDIN));
+    } while ($opcion < 1 || $opcion > 4);
+    return $opcion;
+}
+
+/**
+ * Modificar un viaje
+ */
+function modificarViaje($viaje){
+    do {
+        $opcion = menuModificarViaje();
+        switch ($opcion) {
+            case 1: //Modificar el código.
+                echo "----- Ingrese el nuevo código -----\n";
+                $nuevoCodigo = trim(fgets(STDIN));
+                while ($nuevoCodigo == ($viaje->getCodigo())) {
+                    echo "Debe ingresar un código diferente! Pruebe de nuevo: \n";
+                    $nuevoCodigo = trim(fgets(STDIN));
+                }
+                $viaje->setCodigo($nuevoCodigo);
+                echo "--- El código ha sido modificado con éxito! ---\n";
+                mostrarViaje($viaje);
+                break;
+            case 2: //modificar el destino.
+                echo "----- Ingrese el nuevo destino -----\n";
+                $nuevoDestino = trim(fgets(STDIN));
+                while ($nuevoDestino == $viaje->getDestino()) {
+                    echo "Debe ingresar un destino diferente! Pruebe de nuevo: \n";
+                    $nuevoDestino = trim(fgets(STDIN));
+                }
+                $viaje->setDestino($nuevoDestino);
+                echo "--- El destino ha sido modificado con éxito! ---\n";
+                mostrarViaje($viaje); 
+                break;
+            case 3: //Modificar cantidad máxima de pasajeros.
+                echo "----- Ingrese la nueva cantidad máxima de pasajeros -----\n";
+                
+                $nuevaCantMax = trim(fgets(STDIN));
+                while ($nuevaCantMax <= ($viaje->getCantidadMax())){
+                    echo "La nueva cantida máxima debe ser mayor a la anterior! Pruebe de nuevo: \n";
+                    $nuevaCantMax = trim(fgets(STDIN));
+                }
+                $viaje->setCantidadMax($nuevaCantMax);    
+                echo "--- La cantidad máxima de pasajero ha sido modificada con éxito! ---\n";
+                mostrarViaje($viaje);
+                break;
+            }
+    } while ($opcion <> 4);
+}
+
+/**
  * Muestra el muenu al usuario para poder interactuar con los datos.
  */
 function menu(){
@@ -82,7 +142,7 @@ do {
             break;
         case 2:
             echo "----- Modificar un viaje -----\n";
-
+                modificarViaje($objViaje);
             break;
         case 3:
             echo "----- Agregar un pasajero -----\n";
