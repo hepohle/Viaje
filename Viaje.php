@@ -28,7 +28,8 @@ class Viaje{
        $this->pasajerosDelViaje = $pasajerosDelViaje;
     }
 
-//METODOS
+//METODOS 
+    //GETTERS SETTERS
     public function getCodigo()
     {
         return $this->codigo;
@@ -97,6 +98,42 @@ class Viaje{
     public function obtenerDNIPasajero($indice){
         $i_pasajero_dni = ($this->getPasajerosDelViaje())[$indice -1]["dni"];
         return $i_pasajero_dni;
+    }
+
+    //MODIFICAR PASAJERO
+    public function modificarPasajeroNombre($pasajerosDelViaje, $indice, $nuevoNombre){
+        $pasajerosDelViaje[$indice]["nombre"] = $nuevoNombre;
+    }
+
+    public function modificarPasajeroApellido($pasajerosDelViaje, $indice){
+        
+    }
+
+    public function modificarPasajeroDni($pasajerosDelViaje, $indice){
+        
+    }
+
+    //AGREGAR UN PASAJERO
+    public function agregarPasajero($nuevoPasajero){
+        //$indice = count($pasajerosDelViaje);
+        $arr = ($this->getPasajerosDelViaje());
+        array_push($arr, $nuevoPasajero);
+        
+        $this->setPasajerosDelViaje($arr);
+        
+    }
+
+    //MODIFICAR VIAJE
+    public function modificarCodigo($viaje, $nuevoCodigo){
+        $viaje->setCodigo($nuevoCodigo);
+    }
+
+    public function modificarDestino($viaje, $nuevoDestino){
+        $viaje->setDestino($nuevoDestino);
+    }
+
+    public function modificarCantidadMax($viaje, $nuevaCantMax){
+        $viaje->setCantidadMax($nuevaCantMax); 
     }
 }
 ?>
