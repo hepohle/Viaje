@@ -101,16 +101,22 @@ class Viaje{
     }
 
     //MODIFICAR PASAJERO
-    public function modificarPasajeroNombre($pasajerosDelViaje, $indice, $nuevoNombre){
-        $pasajerosDelViaje[$indice]["nombre"] = $nuevoNombre;
+    public function modificarPasajeroNombre($indice, $nuevoNombre){
+        $arr = $this->getPasajerosDelViaje();
+        $arr[$indice - 1]["nombre"] = $nuevoNombre;
+        $this->setPasajerosDelViaje($arr);
     }
 
-    public function modificarPasajeroApellido($pasajerosDelViaje, $indice){
-        
+    public function modificarPasajeroApellido($indice, $nuevoApellido){
+        $arr = $this->getPasajerosDelViaje();
+        $arr[$indice -1]["apellido"] = $nuevoApellido;
+        $this->setPasajerosDelViaje($arr);
     }
 
-    public function modificarPasajeroDni($pasajerosDelViaje, $indice){
-        
+    public function modificarPasajeroDni($indice, $nuevoDni){
+        $arr = $this->getPasajerosDelViaje();
+        $arr[$indice -1]["dni"] = $nuevoDni;
+        $this->setPasajerosDelViaje($arr);
     }
 
     //AGREGAR UN PASAJERO
@@ -119,8 +125,16 @@ class Viaje{
         $arr = ($this->getPasajerosDelViaje());
         array_push($arr, $nuevoPasajero);
         
-        $this->setPasajerosDelViaje($arr);
-        
+        $this->setPasajerosDelViaje($arr);   
+    }
+
+    //ELIMINAR UN PASAJERO
+    public function elimanrPasajero($indice){
+        $arr = ($this->getPasajerosDelViaje());
+        unset($arr[$indice -1]);
+        $arraNuevo = array_values($arr);
+
+        $this->setPasajerosDelViaje($arraNuevo);
     }
 
     //MODIFICAR VIAJE
