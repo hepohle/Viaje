@@ -100,26 +100,28 @@ class Viaje{
         return $i_pasajero_dni;
     }
 
-    //MODIFICAR PASAJERO
+    // MODIFICAR NOMBRE
     public function modificarPasajeroNombre($indice, $nuevoNombre){
         $arr = $this->getPasajerosDelViaje();
         $arr[$indice - 1]["nombre"] = $nuevoNombre;
         $this->setPasajerosDelViaje($arr);
     }
 
+    /// MODIFICAR APELLIDO
     public function modificarPasajeroApellido($indice, $nuevoApellido){
         $arr = $this->getPasajerosDelViaje();
         $arr[$indice -1]["apellido"] = $nuevoApellido;
         $this->setPasajerosDelViaje($arr);
     }
 
+    /// MODIFICAR DNI
     public function modificarPasajeroDni($indice, $nuevoDni){
         $arr = $this->getPasajerosDelViaje();
         $arr[$indice -1]["dni"] = $nuevoDni;
         $this->setPasajerosDelViaje($arr);
     }
 
-    //AGREGAR UN PASAJERO
+    // AGREGAR UN PASAJERO
     public function agregarPasajero($nuevoPasajero){
         //$indice = count($pasajerosDelViaje);
         $arr = ($this->getPasajerosDelViaje());
@@ -128,7 +130,7 @@ class Viaje{
         $this->setPasajerosDelViaje($arr);   
     }
 
-    //ELIMINAR UN PASAJERO
+    // ELIMINAR UN PASAJERO
     public function elimanrPasajero($indice){
         $arr = ($this->getPasajerosDelViaje());
         unset($arr[$indice -1]);
@@ -137,15 +139,17 @@ class Viaje{
         $this->setPasajerosDelViaje($arraNuevo);
     }
 
-    //MODIFICAR VIAJE
+    // MODIFICAR VIAJE --- CODIGO
     public function modificarCodigo($viaje, $nuevoCodigo){
         $viaje->setCodigo($nuevoCodigo);
     }
 
+    // MODIFICAR VIAJE --- DESTINO
     public function modificarDestino($viaje, $nuevoDestino){
         $viaje->setDestino($nuevoDestino);
     }
 
+    // MODIFICAR VIAJE --- CANTIDA MÁXIMA DE PASAJEROS
     public function modificarCantidadMax($viaje, $nuevaCantMax){
         $viaje->setCantidadMax($nuevaCantMax); 
     }
