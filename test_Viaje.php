@@ -41,8 +41,8 @@ function mostrarPasajeros($arr){
         foreach ($valor as $key => $value) { 
             echo $key . " : " . $value . "\n";
         }
-        echo "----------\n";
-    }
+        echo "-----*-----\n";
+    }   
 }
 
 /**
@@ -52,8 +52,7 @@ function mostrarViaje($viaje){
     echo "Código de viaje:  {$viaje->getCodigo()} \n";
     echo "Destino de viaje: {$viaje->getDestino()}.\n";
     echo "Cantidad máxima de pasajeros: {$viaje->getCantidadMax()}.\n";
-    //echo "Pasajeros: \n";
-    //mostrarPasajeros($viaje->getPasajerosDelViaje());
+    echo "-----*-----\n";
 }
 
 /**
@@ -153,6 +152,8 @@ function modificarPasajero($objViaje){
         $opcion = menuModificarPasajero();
         switch ($opcion) {
             case 1:
+                $pasajeros = $objViaje->getPasajerosDelViaje();
+                mostrarPasajeros($pasajeros);
                 echo "Ingrese el nº del pasajero que quiere modificar: \n";
                 $indice = trim(fgets(STDIN));
                 echo "Ingrese el nombre: \n";
@@ -245,7 +246,7 @@ do {
         case 7: /// MOSTRAR PASAJEROS
             echo "----- Mostrar pasajeros -----\n";
             $arr = $objViaje->getPasajerosDelViaje();    
-            mostrarViaje($arr);
+            mostrarPasajeros($arr);
             break;
     }
 } while ($opcion <> 8); /// SALIR DEL PROGRAMA
