@@ -58,7 +58,17 @@ function ingresarResponsable(){
  * Pide los datos de los pasajeros para formar la colección.
  */
 function ingresarPasajeros(){
-
+    echo "Ingrese los datos del nuevo pasajero: \n";
+    echo "Nombre: \n";
+    $nombre = trim(fgets(STDIN));
+    echo "Apellido: \n";
+    $apellido = trim(fgets(STDIN));
+    echo "Nº documento: \n";
+    $dni = trim(fgets(STDIN));
+    echo "Teléfono: \n";
+    $tel = trim(fgets(STDIN));
+    $nuevoPasajero = new Pasajero($nombre, $apellido, $dni, $tel);
+    return $nuevoPasajero;
 }
 
 /**
@@ -127,7 +137,7 @@ function modificarViaje($viaje){
                     echo "Debe ingresar un código diferente! Pruebe de nuevo: \n";
                     $nuevoCodigo = trim(fgets(STDIN));
                 }
-                $viaje->modificarCodigo($viaje, $nuevoCodigo);
+                $viaje->setCodigo($nuevoCodigo);
                 echo "--- El código ha sido modificado con éxito! ---\n";
                 
                 break;
@@ -138,7 +148,7 @@ function modificarViaje($viaje){
                     echo "Debe ingresar un destino diferente! Pruebe de nuevo: \n";
                     $nuevoDestino = trim(fgets(STDIN));
                 }
-                $viaje->modificarDestino($viaje, $nuevoDestino);
+                $viaje->setDestino($nuevoDestino);
                 echo "--- El destino ha sido modificado con éxito! ---\n";
                 mostrarViaje($viaje); 
                 break;
@@ -150,27 +160,25 @@ function modificarViaje($viaje){
                     echo "La nueva cantida máxima debe ser mayor a la anterior! Pruebe de nuevo: \n";
                     $nuevaCantMax = trim(fgets(STDIN));
                 }
-                $viaje->modificarCantidadMax($viaje, $nuevaCantMax);    
+                $viaje->setCantidadMax($nuevaCantMax);    
                 echo "--- La cantidad máxima de pasajero ha sido modificada con éxito! ---\n";
                 
                 break;
+            case 4: // Agregar un pasajero.
+                echo "----- Ingrese un nuevo pasajero ------\n";
+                $nPasajero = $viaje->ingresarPasajeros();
+                $dni_nPasajero = $nPasajero->getNroDocumento();
+                $condition = $viaje->buscarPasajero($dni_nPasajero);
+                if ($condition == -1) {
+                    $viaje->agregarPasajero($nPasajero);    
+                }else {
+                    echo "Ese pasajero ya está en el viaje\n";
+                }
+                
             }
     } while ($opcion <> 4);
 }
 
-/**
- * Agregar un pasajero
- */
-function ingresarPasajero(){
-    echo "Ingrese el nombre del pasajero: \n";
-    $n_Nombre = trim(fgets(STDIN));
-    echo "Ingrese el apellido del pasajero: \n";
-    $n_Apellido = trim(fgets(STDIN));
-    echo "Ingrese el dni del pasajero: \n";
-    $n_Dni = trim(fgets(STDIN));
-    $nuevoPasajero = ["nombre" => $n_Nombre, "apellido" => $n_Apellido, "dni" => $n_Dni];
-    return $nuevoPasajero;
-}
 
 /**
  * Menu modificar pasajero
@@ -280,8 +288,14 @@ do {
             break;
         case 3: /// AGREGAR PASAJERO
             echo "----- Agregar un pasajero -----\n";
-            $nuevoPasajero = ingresarPasajero();
-            $objViaje->agregarPasajero($nuevoPasajero);
+            $nPasajero = ingresarPasajeros();
+            $dni_nPasajero = $nPasajero->getNroDocumento();
+            $condition = $objViaje->buscarPasajero($dni_nPasajero);
+            if ($condition == -1) {
+                $objViaje->agregarPasajero($nPasajero);    
+            }else {
+                echo "Ese pasajero ya está en el viaje\n";
+            }
             break;
         case 4: /// ELIMINAR PASAJERO
             echo "----- Eliminar un pasajero -----\n";

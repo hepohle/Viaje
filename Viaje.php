@@ -129,16 +129,11 @@ class Viaje{
         }
     }
 
-    //OBTIENE EL DNI DE UN PASAJERO SEGUN UN INDICE
-    public function obtenerDNIPasajero($indice){
-        $i_pasajero_dni = ($this->getPasajerosDelViaje())[$indice -1]["dni"];
-        return $i_pasajero_dni;
-    }
-
     // AGREGAR UN PASAJERO
     public function agregarPasajero($nuevoPasajero){
-        //$indice = count($pasajerosDelViaje);
         $arr = ($this->getPasajerosDelViaje());
+        $i = count($arr);
+
         array_push($arr, $nuevoPasajero);
         
         $this->setPasajerosDelViaje($arr);   
@@ -155,21 +150,6 @@ class Viaje{
                 $this->setPasajerosDelViaje($arrPasajeros);
             }
         }
-    }
-
-    // MODIFICAR VIAJE --- CODIGO
-    public function modificarCodigo($viaje, $nuevoCodigo){
-        $viaje->setCodigo($nuevoCodigo);
-    }
-
-    // MODIFICAR VIAJE --- DESTINO
-    public function modificarDestino($viaje, $nuevoDestino){
-        $viaje->setDestino($nuevoDestino);
-    }
-
-    // MODIFICAR VIAJE --- CANTIDA MÁXIMA DE PASAJEROS
-    public function modificarCantidadMax($viaje, $nuevaCantMax){
-        $viaje->setCantidadMax($nuevaCantMax); 
     } 
 
     // BUSCAR PASAJERO
@@ -187,9 +167,6 @@ class Viaje{
         return $posicion;
     }
 }
-
-
-
 
 
 ?>
