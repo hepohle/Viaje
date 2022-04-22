@@ -178,7 +178,7 @@ function ingresarPasajero(){
 function  menuModificarPasajero(){
     echo "[1] Cambiar nombre. \n";
     echo "[2] Cambiar apellido. \n";
-    echo "[3] Cambiar DNI. \n";
+    echo "[3] Cambiar Teléfono. \n";
     echo "[4] Volver al menu anterior. \n";
     do {
         echo "Elija una opción: \n";
@@ -199,31 +199,49 @@ function modificarPasajero($objViaje){
                 mostrarPasajeros($pasajeros);
                 echo "Ingrese el dni del pasajero que quiere modificar: \n";
                 $dni = trim(fgets(STDIN));
-                echo "Ingrese el nombre: \n";
-                $newNombre = trim(fgets(STDIN));
-                $objViaje->modificarPasajeroNombre($dni, $newNombre);
-                $arr = $objViaje->getPasajerosDelViaje();
-                mostrarPasajeros($arr);
+                $posicion = $objViaje->buscarPasajero($dni);
+                if ($posicion <> -1) {
+                    echo "Ingrese el nombre: \n";
+                    $newNombre = trim(fgets(STDIN));   
+                    $pasajeros[$posicion]->setNombre($newNombre);
+                    $arr = $objViaje->getPasajerosDelViaje();
+                    $pasMod = $arr[$posicion];
+                    echo $pasMod . "\n";
+                    echo "Datos modificados con éxito\n";
+                }
+                
                 break;
             case 2:
+                $pasajeros = $objViaje->getPasajerosDelViaje();
+                mostrarPasajeros($pasajeros);
                 echo "Ingrese el dni del pasajero que quiere modificar: \n";
                 $dni = trim(fgets(STDIN));
-                echo "Ïngrese el apellido: \n";
-                $newApellido = trim(fgets(STDIN));
-                $objViaje->modificarPasajeroApellido($dni, $newApellido);
-                $arr = $objViaje->getPasajerosDelViaje();
-                $arr = $objViaje->getPasajerosDelViaje();
-                mostrarPasajeros($arr);
+                $posicion = $objViaje->buscarPasajero($dni);
+                if ($posicion <> -1) {
+                    echo "Ïngrese el apellido: \n";
+                    $newApellido = trim(fgets(STDIN));
+                    $pasajeros[$posicion]->setApellido($newApellido);
+                    $arr = $objViaje->getPasajerosDelViaje();
+                    $pasMod = $arr[$posicion];
+                    echo $pasMod . "\n";
+                    echo "Datos modificados con éxito\n";
+                }
                 break;
             case 3:
+                $pasajeros = $objViaje->getPasajerosDelViaje();
+                mostrarPasajeros($pasajeros);
                 echo "Ingrese el dni del pasajero que quiere modificar: \n";
                 $dni = trim(fgets(STDIN));
-                echo "Ingrese el dni: \n";
-                $newDni = trim(fgets(STDIN));
-                $objViaje->modificarPasajeroDni($dni, $newDni);
-                $arr = $objViaje->getPasajerosDelViaje();
-                $arr = $objViaje->getPasajerosDelViaje();
-                mostrarPasajeros($arr);
+                $posicion = $objViaje->buscarPasajero($dni);
+                if ($posicion <> -1) {
+                    echo "Ingrese el teléfono: \n";
+                    $newTel = trim(fgets(STDIN));
+                    $pasajeros[$posicion]->setTelefono($newTel);
+                    $arr = $objViaje->getPasajerosDelViaje();
+                    $pasMod = $arr[$posicion];
+                    echo $pasMod . "\n";
+                    echo "Datos modificados con éxito\n";
+                }
                 break;
         }
     } while ($opcion <> 4);

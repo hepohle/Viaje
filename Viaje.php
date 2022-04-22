@@ -135,39 +135,6 @@ class Viaje{
         return $i_pasajero_dni;
     }
 
-    // MODIFICAR NOMBRE
-    public function modificarPasajeroNombre($dni, $nuevoNombre){
-        $pasajeros = $this->getPasajerosDelViaje();
-        
-        foreach ($pasajeros as $pasajero) {
-            if ($pasajero->getNroDocumento() == $dni) {
-                $pasajero->setNroDocumento($nuevoNombre);
-            }
-        }
-    }
-
-    /// MODIFICAR APELLIDO
-    public function modificarPasajeroApellido($dni, $nuevoApellido){
-        $pasajeros = $this->getPasajerosDelViaje();
-
-        foreach ($pasajeros as $pasajero) {
-            if ($pasajero->getNroDocumento() == $dni) {
-                $pasajero->setApellido($nuevoApellido);
-            }
-        }
-    }
-
-    /// MODIFICAR DNI
-    public function modificarPasajeroDni($dni, $nuevoDni){
-        $pasajeros = $this->getPasajerosDelViaje();
-
-        foreach ($pasajeros as $pasajero) {
-            if ($pasajero->getNroDocumento() == $dni) {
-                $pasajero->setNroDocumento($nuevoDni);
-            }
-        }
-    }
-
     // AGREGAR UN PASAJERO
     public function agregarPasajero($nuevoPasajero){
         //$indice = count($pasajerosDelViaje);
@@ -203,8 +170,26 @@ class Viaje{
     // MODIFICAR VIAJE --- CANTIDA MÁXIMA DE PASAJEROS
     public function modificarCantidadMax($viaje, $nuevaCantMax){
         $viaje->setCantidadMax($nuevaCantMax); 
-    }  
+    } 
+
+    // BUSCAR PASAJERO
+    function buscarPasajero($dni){
+        $arrPasajeros = $this->getPasajerosDelViaje();
+        $i = 0;
+        $seEncontro = false;
+        while ($i < count($arrPasajeros) && !$seEncontro) {
+            $objPasajero = $arrPasajeros[$i];
+            $seEncontro = ($objPasajero->getNroDocumento() == $dni);
+
+            $i = $i + 1;
+        }
+        $posicion = ($seEncontro ? ($i-1) : -1);
+        return $posicion;
+    }
 }
+
+
+
 
 
 ?>
