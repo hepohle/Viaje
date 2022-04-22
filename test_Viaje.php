@@ -1,18 +1,23 @@
 <?php
 
 include "Viaje.php";
+include "Pasajero.php";
+include  "ResponsableV.php";
 
 //Array de muestra de los pasajeros del viaje.
-$v_pasajeros = array(
-    0 => ["nombre" => "Juan", "apellido" => "Perez", "dni" => 21457338],
-    1 => ["nombre" => "Oscar", "apellido" => "García", "dni" => 31457558],
-    2 => ["nombre" => "Rosa", "apellido" => "Gonzalez", "dni" => 21457838],
-    3 => ["nombre" => "María", "apellido" => "Diaz", "dni" => 13457638],
-    4 => ["nombre" => "Alejandro", "apellido" => "Mendez", "dni" => 42457438],
-);
+
+$pasajero1 = new Pasajero("Juan", "Perez", 21457338, 155987654);
+$pasajero2 = new Pasajero("Oscar", "García",31457558, 155321789);
+$pasajero3 = new Pasajero("Rosa", "Gonzalez", 21457838, 155789654);
+$pasajero4 = new Pasajero("María", "Diaz", 13457638, 1551236654);
+$pasajero5 = new Pasajero("Alejandro", "Mendez", 42457438, 155456789);
+
+$coleccionPasajeros = [$pasajero1, $pasajero2, $pasajero3, $pasajero4, $pasajero5];
+
+$objResponsable = new ResponsableV(1, 123, "José", "Blanco");
 
 // Creacion de un nuevo objeto Viaje de muestra
-$objViaje = new Viaje(125, "Bariloche", 55, $v_pasajeros);
+$objViaje = new Viaje(125, "Bariloche", 55, $coleccionPasajeros, $objResponsable);
 
 // Array con los pasajeros del viaje.
 $listaPasajeros = $objViaje->getPasajerosDelViaje();
@@ -25,25 +30,62 @@ function nuevoViaje($arr){
     $n_destino = trim(fgets(STDIN));
     echo "Ingrese cantidad máxima de pasajeros: \n";
     $n_cantMax = trim(fgets(STDIN));
+    echo "Ingrese el responsable del viaje: \n";
+    $objResponsable = ingresarResponsable();
     $n_pasajeros = $arr;
-    $n_viaje = new Viaje($n_codigo, $n_destino, $n_cantMax, $n_pasajeros);
+    $n_viaje = new Viaje($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable);
     return $n_viaje;
 };
 
 /**
+ * Pide los datos del responsable del viaje y crea el objeto Responsable.
+ */
+function ingresarResponsable(){
+    echo "Nº de empleado: \n";
+    $n_empleado = trim(fgets(STDIN));
+    echo "Nº de licencia: \n";
+    $n_licencia = trim(fgets(STDIN));
+    echo "Nombre: \n";
+    $nombreResponsable = trim(fgets(STDIN));
+    echo "Apellido: \n";
+    $apellidoResponsable = trim(fgets(STDIN));
+    $responsableViaje = new ResponsableV($n_empleado, $n_licencia, $nombreResponsable, $apellidoResponsable);
+
+    return $responsableViaje;
+}
+
+/**
+ * Pide los datos de los pasajeros para formar la colección.
+ */
+function ingresarPasajeros(){
+
+}
+
+/**
  * Recibe un array con todos los pasajeros del viaje y los muestra por pantalla.
  */
+// function mostrarPasajeros($arr){
+//     $i = 1;
+//     foreach ($arr as $valor) {
+//         echo "[{$i}] PASAJERO \n";
+//         $i = $i +1;
+//         foreach ($valor as $key => $value) { 
+//             echo $key . " : " . $value . "\n";
+//         }
+//         echo "-----*-----\n";
+//     }   
+// }
+
 function mostrarPasajeros($arr){
     $i = 1;
-    foreach ($arr as $valor) {
-        echo "[{$i}] PASAJERO \n";
-        $i = $i +1;
-        foreach ($valor as $key => $value) { 
-            echo $key . " : " . $value . "\n";
-        }
-        echo "-----*-----\n";
-    }   
+    foreach ($arr as $key => $value) {
+        $pasajero = $value;
+        echo "Pasajero {$i}:\n";
+        echo $pasajero;
+        $i++;
+    }
 }
+
 
 /**
  * Recibe un objeto Viaje y muestra por pantalla todos los datos del viaje
@@ -52,6 +94,7 @@ function mostrarViaje($viaje){
     echo "Código de viaje:  {$viaje->getCodigo()} \n";
     echo "Destino de viaje: {$viaje->getDestino()}.\n";
     echo "Cantidad máxima de pasajeros: {$viaje->getCantidadMax()}.\n";
+    echo "Responsable del viaje: {$viaje->getObjResponsable()}\n";
     echo "-----*-----\n";
 }
 
@@ -154,30 +197,30 @@ function modificarPasajero($objViaje){
             case 1:
                 $pasajeros = $objViaje->getPasajerosDelViaje();
                 mostrarPasajeros($pasajeros);
-                echo "Ingrese el nº del pasajero que quiere modificar: \n";
-                $indice = trim(fgets(STDIN));
+                echo "Ingrese el dni del pasajero que quiere modificar: \n";
+                $dni = trim(fgets(STDIN));
                 echo "Ingrese el nombre: \n";
                 $newNombre = trim(fgets(STDIN));
-                $objViaje->modificarPasajeroNombre($indice, $newNombre);
+                $objViaje->modificarPasajeroNombre($dni, $newNombre);
                 $arr = $objViaje->getPasajerosDelViaje();
                 mostrarPasajeros($arr);
                 break;
             case 2:
-                echo "Ingrese el nº del pasajero que quiere modificar: \n";
-                $indice = trim(fgets(STDIN));
+                echo "Ingrese el dni del pasajero que quiere modificar: \n";
+                $dni = trim(fgets(STDIN));
                 echo "Ïngrese el apellido: \n";
                 $newApellido = trim(fgets(STDIN));
-                $objViaje->modificarPasajeroApellido($indice, $newApellido);
+                $objViaje->modificarPasajeroApellido($dni, $newApellido);
                 $arr = $objViaje->getPasajerosDelViaje();
                 $arr = $objViaje->getPasajerosDelViaje();
                 mostrarPasajeros($arr);
                 break;
             case 3:
-                echo "Ingrese el nº del pasajero que quiere modificar: \n";
-                $indice = trim(fgets(STDIN));
+                echo "Ingrese el dni del pasajero que quiere modificar: \n";
+                $dni = trim(fgets(STDIN));
                 echo "Ingrese el dni: \n";
                 $newDni = trim(fgets(STDIN));
-                $objViaje->modificarPasajeroDni($indice, $newDni);
+                $objViaje->modificarPasajeroDni($dni, $newDni);
                 $arr = $objViaje->getPasajerosDelViaje();
                 $arr = $objViaje->getPasajerosDelViaje();
                 mostrarPasajeros($arr);
@@ -211,7 +254,7 @@ do {
     switch ($opcion) {
         case 1: /// INGRESAR NUEVO VIAJE
             echo "----- Ingrese un nuevo viaje -----\n";
-                $viaje = nuevoViaje($v_pasajeros);
+                $viaje = nuevoViaje($coleccionPasajeros);
             break;
         case 2: /// MODIFICAR VIAJE
             echo "----- Modificar un viaje -----\n";
