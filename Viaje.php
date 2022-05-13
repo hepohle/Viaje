@@ -19,6 +19,25 @@ Volver a implementar las operaciones que permiten modificar el nombre, apellido 
 Nota: Recuerden que deben enviar el link a la resolución en su repositorio en GitHub.
 */
 
+
+/* 
+La empresa de transporte desea gestionar la información correspondiente a los Viajes que pueden ser: 
+Terrestres o Aéreos, guardar su importe e indicar si el viaje es de ida y vuelta. 
+De los viajes aéreos se conoce el número del vuelo, la categoría del asiento (primera clase o no), nombre de la aerolínea, y la cantidad de escalas del vuelo en caso de tenerlas. 
+De los viajes terrestres se conoce la comodidad del asiento, si es semicama o cama.
+
+La empresa ahora necesita implementar la venta de un pasaje, para ello debe realizar la función venderPasaje(pasajero) 
+que registra la venta de un viaje al pasajero que es recibido por parámetro. 
+La venta se realiza solo si hayPasajesDisponible. 
+Si el viaje es terrestre y el asiento es cama, se incrementa el importe un 25%. 
+Si el viaje es aéreo y el asiento es primera clase sin escalas, se incrementa un 40%, si el viaje además de ser un asiento de primera clase, el vuelo tiene escalas se incrementa el importe del viaje un 60%. 
+Tanto para viajes terrestres o aéreos, si el viaje es ida y vuelta, se incrementa el importe del viaje un 50%. 
+El método retorna el importe del pasaje si se pudo realizar la venta.
+
+Implemente la función hayPasajesDisponible() que retorna verdadero si la cantidad de pasajeros del viaje es menor a la cantidad máxima de pasajeros y falso caso contrario.
+*/
+
+
 class Viaje{
     
 //ATRIBUTOS
@@ -27,15 +46,19 @@ class Viaje{
     private $cantidadMax;
     private $pasajerosDelViaje = [];
     private $objResponsable;
+    private $importe;
+    private $idayVuelta; //boolean
 
 //CONSTRUCTOR
-    public function __construct($codigo, $destino, $cantidadMax, $pasajerosDelViaje, $objResponsable)
+    public function __construct($codigo, $destino, $cantidadMax, $pasajerosDelViaje, $objResponsable, $importe, $idayVuelta)
     {
        $this->codigo = $codigo;
        $this->destino = $destino;
        $this->cantidadMax = $cantidadMax;
        $this->pasajerosDelViaje = $pasajerosDelViaje;
        $this->objResponsable = $objResponsable;
+       $this->importe = $importe;
+       $this->idayVuelta = $idayVuelta;
     }
 
 //METODOS 
@@ -47,7 +70,6 @@ class Viaje{
     public function setCodigo($codigo)
     {
         $this->codigo = $codigo;
-        return $this;
     }
 
     public function getDestino()
@@ -57,7 +79,6 @@ class Viaje{
     public function setDestino($destino)
     {
         $this->destino = $destino;
-        return $this;
     }
 
     public function getCantidadMax()
@@ -67,7 +88,6 @@ class Viaje{
     public function setCantidadMax($cantidadMax)
     {
         $this->cantidadMax = $cantidadMax;
-        return $this;
     }
  
     public function getPasajerosDelViaje()
@@ -77,7 +97,6 @@ class Viaje{
     public function setPasajerosDelViaje($pasajerosDelViaje)
     {
         $this->pasajerosDelViaje = $pasajerosDelViaje;
-        return $this;
     }
 
     public function getObjResponsable()
@@ -88,18 +107,39 @@ class Viaje{
     public function setObjResponsable($objResponsable)
     {
         $this->objResponsable = $objResponsable;
-        return $this;
+    }
+
+    public function getImporte()
+    {
+        return $this->importe;
+    }
+
+    public function setImporte($importe)
+    {
+        $this->importe = $importe;
+    }
+
+    public function getIdayVuelta()
+    {
+        return $this->idayVuelta;
+    }
+
+    public function setIdayVuelta($idayVuelta)
+    {
+        $this->idayVuelta = $idayVuelta;
     }
 
 //__toString
     public function __toString()
     {
-        $cadena = "
-        Código del viaje: {$this->getCodigo()}\n
-        Destino del viaje: {$this->getDestino()}\n
-        Cantidad máxima de pasajeros: {$this->getCantidadMax()}\n
-        Pasajeros: {$this->getPasajerosDelViaje()}\n
-        Responsable: {$this->getObjResponsable()}\n";
+        $cadena = "Código del viaje: " . $this->getCodigo() . "\n" . 
+        "Destino del viaje: " . $this->getDestino() . "\n" . 
+        "Cantidad máxima de pasajeros: " . $this->getCantidadMax() . "\n" .
+        "Pasajeros: " . $this->getPasajerosDelViaje() . "\n" .
+        "Responsable: " . $this->getObjResponsable() . "\n" . 
+        "Ida y Vuelta: " . $this->getIdayVuelta() . "\n" . 
+        "Importe: $" . $this->getImporte() . "\n";
+
 
         return $cadena;
     }
@@ -153,7 +193,7 @@ class Viaje{
     } 
 
     // BUSCAR PASAJERO
-    function buscarPasajero($dni){
+    public function buscarPasajero($dni){
         $arrPasajeros = $this->getPasajerosDelViaje();
         $i = 0;
         $seEncontro = false;
@@ -166,6 +206,24 @@ class Viaje{
         $posicion = ($seEncontro ? ($i-1) : -1);
         return $posicion;
     }
+
+    public function hayPasajesDisponible($cantPasajes)
+    {
+        $hayLugar = false;
+        $cantPasajeros = count($this->getPasajerosDelViaje());
+        $totalPasajeros = $cantPasajeros + $cantPasajes;
+        $cantAsientos = count($this->getCantidadMax());
+        if ($totalPasajeros < $cantAsientos) {
+            $hayLugar = true;
+        }
+        return $hayLugar;
+    }
+
+    public function venderPasaje($pasajero)
+    {
+
+    }
+
 }
 
 
