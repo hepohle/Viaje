@@ -180,14 +180,48 @@ class Viaje{
         return $apellidoPasajero;
     }
 
+    public function hayLugar(){
+        $respuesta = true;
+        $cantidadMax = $this->getCantidadMax();
+        $pasajeros = $this->getPasajerosDelViaje();
+        $cantPasajeros = count($pasajeros);
+        if ($cantidadMax <= $cantPasajeros) {
+            $respuesta = false;
+        }
+        return $respuesta;
+    }
+
     // AGREGAR UN PASAJERO
     public function agregarPasajero($nuevoPasajero){
-        $arr = ($this->getPasajerosDelViaje());
-        $i = count($arr);
+        $pasajeros = ($this->getPasajerosDelViaje());
+        $top = count($pasajeros);
+        $i = 0;
+        $noEncontrado = true;
+        $dniNuevoPasajero = $nuevoPasajero->getNroDocumento();
+        $respuesta = false;
 
-        array_push($arr, $nuevoPasajero);
-        
-        $this->setPasajerosDelViaje($arr);   
+        while ($noEncontrado && $i < $top) {
+            $pasajero = $pasajeros[$i];
+            $dniPasajero = $pasajero->getNroDocumento();
+            if ($dniPasajero == $dniNuevoPasajero) {
+                $noEncontrado == false;
+            }
+            $i++;
+        }
+
+        if ($noEncontrado) {
+            $respuesta = true;
+            $pos = count($pasajeros);
+            if ($pos == 0) {
+                $pasajeros[0]= $nuevoPasajero;
+            }else {
+                $pasajeros[$pos] = $nuevoPasajero;
+            }
+            $this->setPasajerosDelViaje($pasajeros);
+        }else {
+            $respuesta = false;
+        }
+        return $respuesta;
     }
 
     // ELIMINAR UN PASAJERO
@@ -233,11 +267,6 @@ class Viaje{
             $hayLugar = true;
         }
         return $hayLugar;
-    }
-
-    public function venderPasaje($pasajero)
-    {
-        
     }
 
 }

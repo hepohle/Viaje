@@ -47,6 +47,31 @@ class Empresa{
     }
 
 
+    public function venderPasaje($objpasajero){
+        $montoTotal = null;
+        $viajes = $this->getColeccionViajes();
+        $top = count($viajes);
+        $a = 0;
+        $viajeNoDisp = true;
+        while ($a < $top && $viajeNoDisp) {
+            $viaje = $viajes[$a];
+            $hayLugar = $viaje->hayLugar();
+            if ($hayLugar) {
+                $viajeNoDisp = false;
+                $pos = $a;
+            }
+        }
+        if (!$viajeNoDisp) {
+            $pasajeroAgregado = $viaje->agregarPasajero($objpasajero);
+            if ($pasajeroAgregado) {
+                $montoTotal = $viaje->calcularMontoTotal();
+                $viajes[$pos] = $viaje;
+                $this->setColeccionViajes($viajes);
+            }
+        }
+        return $montoTotal;
+    }
+
 }
 
 ?>

@@ -29,6 +29,20 @@ class ViajeTerrestre extends Viaje
         $cadena .= "\n Tipo de Asiento: " . $this->getTipoDeAsiento() . "\n";
         return $cadena;
     }
+
+    // Calcula el importe total dependiendo del tipo de asiento y si es ida y vuelta.
+    public function calcularMontoTotal(){
+        $importe = $this->getImporte();
+        $tipoAsiento = $this->getTipoDeAsiento();
+        $idaVuelta = $this->getIdayVuelta();
+        if ($tipoAsiento == "Cama") {
+            $importe = $importe * 1.25;
+        }
+        if ($idaVuelta) {
+            $importe = $importe * 1.5;
+        }
+        return $importe;
+    }
 }
 
 ?>

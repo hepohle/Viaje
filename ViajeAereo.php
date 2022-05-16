@@ -5,7 +5,7 @@ include "Viaje.php";
 class ViajeAereo extends Viaje
 {
     private $nroDeVuelo;
-    private $categoria;
+    private $categoria; //Primera Clase 0 Standard
     private $escalas;
 
     public function __construct($codigo, $destino, $cantidadMax, $pasajerosDelViaje, $objResponsable, $importe, $idayVuelta, $nroDeVuelo, $categoria, $escalas)
@@ -54,6 +54,22 @@ class ViajeAereo extends Viaje
         "Categoría: " . $this->getCategoria() . "\n" . 
         "Escalas: " . $this->getEscalas() . "\n";
         return $cadena;
+    }
+
+    public function calcularMontoTotal(){
+        $importe = $this->getImporte();
+        $escalas = $this->getEscalas();
+        $categoria = $this->getCategoria();
+        $idaVuelta = $this->getIdayVuelta();
+        if ($categoria == "Primera Clase" && $escalas == 0) {
+            $importe = $importe * 1.4;
+        }elseif ($categoria == "Primera Clase" && $escalas > 0) {
+            $importe = $importe * 1.6;
+        }
+        if ($idaVuelta) {
+            $importe = $importe * 1.5;
+        }
+        return $importe;
     }
 }
 
