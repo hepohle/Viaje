@@ -6,14 +6,16 @@ class ViajeAereo extends Viaje
 {
     private $nroDeVuelo;
     private $categoria; //Primera Clase 0 Standard
+    private $nombreAerolinea;
     private $escalas;
 
-    public function __construct($codigo, $destino, $cantidadMax, $pasajerosDelViaje, $objResponsable, $importe, $idayVuelta, $nroDeVuelo, $categoria, $escalas)
+    public function __construct($codigo, $destino, $cantidadMax, $pasajerosDelViaje, $objResponsable, $importe, $idayVuelta, $nroDeVuelo, $categoria, $nombreAerolinea, $escalas)
     {
         parent :: __construct($codigo, $destino, $cantidadMax, $pasajerosDelViaje, $objResponsable, $importe, $idayVuelta);
 
         $this->nroDeVuelo = $nroDeVuelo;
         $this->categoria = $categoria;
+        $this->nombreAerolinea = $nombreAerolinea;
         $this->escalas = $escalas;
     }
 
@@ -47,12 +49,22 @@ class ViajeAereo extends Viaje
         $this->escalas = $escalas;
     }
 
+    public function getNombreAerolinea(){
+        return $this->nombreAerolinea;
+    }
+
+    public function setNombreAerolinea($nombreAerolinea){
+        $this->nombreAerolinea = $nombreAerolinea;
+    }
+
     public function __toString()
     {
         $cadena = parent :: __toString();
         $cadena .= "\n Nº de vuelo: " . $this->getNroDeVuelo() . "\n" .
         "Categoría: " . $this->getCategoria() . "\n" . 
-        "Escalas: " . $this->getEscalas() . "\n";
+        "Escalas: " . $this->getEscalas() . "\n" . 
+        "Aerolinea: " . $this->getNombreAerolinea() . "\n";
+
         return $cadena;
     }
 

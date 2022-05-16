@@ -27,7 +27,7 @@ $objResponsable3 = new ResponsableV(3, 321, "Luis", "Paez");
 // Creacion de un nuevo objeto Viaje de muestra
 $objViaje1 = new ViajeTerrestre(125, "Bariloche", 55, $coleccionPasajeros1, $objResponsable1, 2000, true, "Cama");
 $objViaje2 = new ViajeTerrestre(111, "Cordoba", 30, $coleccionPasajeros2, $objResponsable2, 3500, false, "Semicama");
-$objViaje3 = new ViajeAereo(333, "Buenos Aires", 40, $coleccionPasajeros3, $objResponsable3, 15000, true, 12345, "Primera Clase", 2);
+$objViaje3 = new ViajeAereo(333, "Buenos Aires", 40, $coleccionPasajeros3, $objResponsable3, 15000, true, 12345, "Primera Clase", "Latam", 2);
 
 
 // Coleccion de viajes
@@ -69,8 +69,10 @@ function nuevoViaje($arr){
         $catVuelo = trim(fgets(STDIN));
         echo "Escalas: \n";
         $escalasVuelo = trim(fgets(STDIN));
+        echo "Aerolinea: \n";
+        $nombreAerolinea = trim(fgets(STDIN));
         
-        $n_viaje = new ViajeAereo($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta, $nro_vuelo, $catVuelo, $escalasVuelo);
+        $n_viaje = new ViajeAereo($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta, $nro_vuelo, $catVuelo, $nombreAerolinea, $escalasVuelo);
     }elseif ($tipoViaje == "terrestre") {
        echo "Tipo de asiento: (Cama / Semi-cama)\n";
        $tipoAsiento = trim(fgets(STDIN));
