@@ -1,10 +1,10 @@
 <?php
-include "Empresa.php";
-include "Viaje.php";
-include "ViajeTerrestre.php";
-include "ViajeAereo.php";
-include "Pasajero.php";
-include  "ResponsableV.php";
+require_once ("Empresa.php");
+require_once ("Viaje.php");
+require_once ("ViajeTerrestre.php");
+require_once ("ViajeAereo.php");
+require_once ("Pasajero.php");
+require_once ("ResponsableV.php");
 
 //Array de muestra de los pasajeros del viaje.
 
@@ -14,18 +14,27 @@ $pasajero3 = new Pasajero("Rosa", "Gonzalez", 21457838, 155789654);
 $pasajero4 = new Pasajero("María", "Diaz", 13457638, 1551236654);
 $pasajero5 = new Pasajero("Alejandro", "Mendez", 42457438, 155456789);
 
-$coleccionPasajeros = [$pasajero1, $pasajero2, $pasajero3, $pasajero4, $pasajero5];
+// Collecciones de pasajeros
+$coleccionPasajeros1 = [$pasajero1, $pasajero2, $pasajero3, $pasajero4, $pasajero5];
+$coleccionPasajeros2 = [$pasajero1, $pasajero2, $pasajero3, $pasajero5];
+$coleccionPasajeros3 = [$pasajero1, $pasajero3, $pasajero4, $pasajero5];
 
-$objResponsable = new ResponsableV(1, 123, "José", "Blanco");
+// Responsables de viajes
+$objResponsable1 = new ResponsableV(1, 123, "José", "Blanco");
+$objResponsable2 = new ResponsableV(2, 222, "Juan", "Mendez");
+$objResponsable3 = new ResponsableV(3, 321, "Luis", "Paez");
 
 // Creacion de un nuevo objeto Viaje de muestra
-$objViaje = new Viaje(125, "Bariloche", 55, $coleccionPasajeros, $objResponsable, 2000, true);
+$objViaje1 = new ViajeTerrestre(125, "Bariloche", 55, $coleccionPasajeros1, $objResponsable1, 2000, true, "Cama");
+$objViaje2 = new ViajeTerrestre(111, "Cordoba", 30, $coleccionPasajeros2, $objResponsable2, 3500, false, "Semicama");
+$objViaje3 = new ViajeAereo(333, "Buenos Aires", 40, $coleccionPasajeros3, $objResponsable3, 15000, true, 12345, "Primera Clase", 2);
+
 
 // Coleccion de viajes
-$coleccionViajes = [$objViaje];
+$coleccionViajes = [$objViaje1, $objViaje2, $objViaje3];
 
 // Array con los pasajeros del viaje.
-$listaPasajeros = $objViaje->getPasajerosDelViaje();
+$listaPasajeros = $objViaje1->getPasajerosDelViaje();
 
 // Creacion objeto Empres
 $objEmpresa = new Empresa("Viaje Feliz");
@@ -45,12 +54,28 @@ function nuevoViaje($arr){
     $viajeMonto = trim(fgets(STDIN));
     echo "Ida y vuelta: \n";
     $idaVuelta = ida_Vuelta();
+    echo "Tipo de viaje: (aereo / terrestre)\n";
+    $tipoViaje = trim(fgets(STDIN));
     echo "Ingrese el responsable del viaje: \n";
     $objResponsable = ingresarResponsable();
     
 
     $n_pasajeros = $arr;
-    $n_viaje = new Viaje($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta);
+    
+    if ($tipoViaje == "aereo") {
+        echo "Nº de vuelo: \n";
+        $nro_vuelo = trim(fgets(STDIN));
+        echo "Categoria: \n";
+        $catVuelo = trim(fgets(STDIN));
+        echo "Escalas: \n";
+        $escalasVuelo = trim(fgets(STDIN));
+        
+        $n_viaje = new ViajeAereo($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta, $nro_vuelo, $catVuelo, $escalasVuelo);
+    }elseif ($tipoViaje == "terrestre") {
+       echo "Tipo de asiento: (Cama / Semi-cama)\n";
+       $tipoAsiento = trim(fgets(STDIN));
+       $n_viaje = new ViajeTerrestre($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta, $tipoAsiento); 
+    }
     return $n_viaje;
 };
 
@@ -104,20 +129,8 @@ function ingresarPasajeros(){
 }
 
 /**
- * Recibe un array con todos los pasajeros del viaje y los muestra por pantalla.
+ * Recibe el array con los pasajeros y los imprime en pantalla.
  */
-// function mostrarPasajeros($arr){
-//     $i = 1;
-//     foreach ($arr as $valor) {
-//         echo "[{$i}] PASAJERO \n";
-//         $i = $i +1;
-//         foreach ($valor as $key => $value) { 
-//             echo $key . " : " . $value . "\n";
-//         }
-//         echo "-----*-----\n";
-//     }   
-// }
-
 function mostrarPasajeros($arr){
     $i = 1;
     foreach ($arr as $key => $value) {
@@ -307,12 +320,13 @@ function menu(){
     echo "[5] Modificar un pasajero.\n";
     echo "[6] Mostrar un viaje.\n";
     echo "[7] Mostrar pasajeros.\n";
-    echo "[8] Salir \n";
+    echo "[8] Veder Viaje.\n";
+    echo "[9] Salir \n";
 
     do {
         echo "Elija una opción ";
         $opcion = trim(fgets(STDIN));
-    } while ($opcion < 1 || $opcion > 8);
+    } while ($opcion < 1 || $opcion > 9);
     return $opcion;
 }
 
@@ -364,7 +378,17 @@ do {
             $arr = $objViaje->getPasajerosDelViaje();    
             mostrarPasajeros($arr);
             break;
+        case 8: /// VENDER VIAJE
+            echo "----- Vender viaje a: -----\n
+            {$pasajero1->__toString()}";
+            $importe = $objEmpresa->venderPasaje($pasajero1);
+            if ($importe != null) {
+                echo "\nEl importe es $ {$importe}.\n";
+            }else {
+                echo "No se pude realizar la venta del viaje.\n";
+            }
+            break;
     }
-} while ($opcion <> 8); /// SALIR DEL PROGRAMA
+} while ($opcion <> 9); /// SALIR DEL PROGRAMA
 
 ?>

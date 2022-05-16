@@ -1,6 +1,6 @@
 <?php
 
-include "Viaje.php";
+require_once ("Viaje.php");
 
 class ViajeTerrestre extends Viaje
 {
