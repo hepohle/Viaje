@@ -15,9 +15,9 @@ $pasajero4 = new Pasajero("María", "Diaz", 13457638, 1551236654);
 $pasajero5 = new Pasajero("Alejandro", "Mendez", 42457438, 155456789);
 
 // Collecciones de pasajeros
-$coleccionPasajeros1 = [$pasajero1, $pasajero2, $pasajero3, $pasajero4, $pasajero5];
-$coleccionPasajeros2 = [$pasajero1, $pasajero2, $pasajero3, $pasajero5];
-$coleccionPasajeros3 = [$pasajero1, $pasajero3, $pasajero4, $pasajero5];
+$coleccionPasajeros1 = [$pasajero1, $pasajero2, $pasajero4];
+$coleccionPasajeros2 = [$pasajero1, $pasajero2, $pasajero3];
+$coleccionPasajeros3 = [$pasajero1, $pasajero3, $pasajero4];
 
 // Responsables de viajes
 $objResponsable1 = new ResponsableV(1, 123, "José", "Blanco");
@@ -380,8 +380,8 @@ do {
             break;
         case 8: /// VENDER VIAJE
             echo "----- Vender viaje a: -----\n
-            {$pasajero1->__toString()}";
-            $importe = $objEmpresa->venderPasaje($pasajero1);
+            {$pasajero5->__toString()}";
+            $importe = $objEmpresa->venderPasaje($pasajero5);
             if ($importe != null) {
                 echo "\nEl importe es $ {$importe}.\n";
             }else {
