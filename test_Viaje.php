@@ -1,6 +1,8 @@
 <?php
-
+include "Empresa.php";
 include "Viaje.php";
+include "ViajeTerrestre.php";
+include "ViajeAereo.php";
 include "Pasajero.php";
 include  "ResponsableV.php";
 
@@ -24,6 +26,12 @@ $coleccionViajes = [$objViaje];
 
 // Array con los pasajeros del viaje.
 $listaPasajeros = $objViaje->getPasajerosDelViaje();
+
+// Creacion objeto Empres
+$objEmpresa = new Empresa("Viaje Feliz");
+
+// SET Coleccion de Viajes
+$objEmpresa->setColeccionViajes($coleccionViajes);
 
 // FUNCION CREAR NUEVO VIAJE
 function nuevoViaje($arr){
