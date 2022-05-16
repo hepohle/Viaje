@@ -132,15 +132,20 @@ class Viaje{
 //__toString
     public function __toString()
     {
+        if ($this->getIdayVuelta()) {
+            $viajeIdaVuelta = "Si";
+        }else {
+            $viajeIdaVuelta = "No";
+        }
+
         $cadena = "Código del viaje: " . $this->getCodigo() . "\n" . 
         "Destino del viaje: " . $this->getDestino() . "\n" . 
         "Cantidad máxima de pasajeros: " . $this->getCantidadMax() . "\n" .
         "Pasajeros: " . $this->getPasajerosDelViaje() . "\n" .
-        "Responsable: " . $this->getObjResponsable() . "\n" . 
-        "Ida y Vuelta: " . $this->getIdayVuelta() . "\n" . 
-        "Importe: $" . $this->getImporte() . "\n";
-
-
+        "Ida y Vuelta: ". $viajeIdaVuelta . "\n" . 
+        "Importe: $" . $this->getImporte() . "\n" .
+        "Responsable: " . $this->getObjResponsable() . "\n";
+        
         return $cadena;
     }
 
@@ -149,24 +154,30 @@ class Viaje{
         
         $pasajeros = $this->getPasajerosDelViaje();
         $nombrePasajero = null;
-        foreach ($pasajeros as $pasajero) {
-            if ($pasajero->getNroDocumento() == $dni) {
-                $nombrePasajero = $pasajero->getNombre();
+        $i=0;
+        while ($i < count($pasajeros) && $nombrePasajero = null) {
+            $dniPasajero = $pasajeros[$i]->getNroDocumento();
+            if ($dniPasajero == $dni) {
+                $nombrePasajero = $pasajeros[$i]->getNombre();
             }
-            return $nombrePasajero;
+            $i++;
         }
+        return $nombrePasajero;
     }
 
     //OBTIENE EL APELLIDO DE UN PASAJERO SEGUN DNI
     public function obtenerApellidoPasajero($dni){
         $pasajeros = $this->getPasajerosDelViaje();
         $apellidoPasajero = null;
-        foreach ($pasajeros as $pasajero) {
-            if ($pasajero->getNroDocumento() == $dni) {
-                $apellidoPasajero = $pasajero->getApellido();    
+        $i = 0;
+        while ($i < count($pasajeros) && $apellidoPasajero = null) {
+            $dniPasajero = $pasajeros[$i]->getNroDocumento();
+            if ($dniPasajero == $dni) {
+                $apellidoPasajero = $pasajeros[$i]->getApellido();
             }
-            return $apellidoPasajero;
+            $i++;
         }
+        return $apellidoPasajero;
     }
 
     // AGREGAR UN PASAJERO
@@ -182,14 +193,19 @@ class Viaje{
     // ELIMINAR UN PASAJERO
     public function elimanrPasajero($dni){
         $pasajeros = $this->getPasajerosDelViaje();
-
-        foreach ($pasajeros as $pasajero) {
-            if ($pasajero->getNroDocumento() == $dni) {
-                unset($pasajeros[$pasajeros]);
-                $arrPasajeros = array_values($pasajeros);
-                $this->setPasajerosDelViaje($arrPasajeros);
+        $i =0;
+        $seEncontro = false;
+        while ($i < count($pasajeros) && $seEncontro = false) {
+            $dniPasajero = $pasajeros[$i]->getNroDocumento();
+            if ($dniPasajero == $dni) {
+                unset($pasajeros[$i]);
+                $n_pasajeros = array_values($pasajeros);
+                $this->setPasajerosDelViaje($n_pasajeros);
+                $seEncontro = true;
             }
+            $i ++;
         }
+        return $seEncontro;
     } 
 
     // BUSCAR PASAJERO
@@ -221,7 +237,7 @@ class Viaje{
 
     public function venderPasaje($pasajero)
     {
-
+        
     }
 
 }

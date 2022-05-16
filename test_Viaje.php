@@ -17,7 +17,10 @@ $coleccionPasajeros = [$pasajero1, $pasajero2, $pasajero3, $pasajero4, $pasajero
 $objResponsable = new ResponsableV(1, 123, "José", "Blanco");
 
 // Creacion de un nuevo objeto Viaje de muestra
-$objViaje = new Viaje(125, "Bariloche", 55, $coleccionPasajeros, $objResponsable);
+$objViaje = new Viaje(125, "Bariloche", 55, $coleccionPasajeros, $objResponsable, 2000, true);
+
+// Coleccion de viajes
+$coleccionViajes = [$objViaje];
 
 // Array con los pasajeros del viaje.
 $listaPasajeros = $objViaje->getPasajerosDelViaje();
@@ -30,12 +33,33 @@ function nuevoViaje($arr){
     $n_destino = trim(fgets(STDIN));
     echo "Ingrese cantidad máxima de pasajeros: \n";
     $n_cantMax = trim(fgets(STDIN));
+    echo "Ingrese monto: \n";
+    $viajeMonto = trim(fgets(STDIN));
+    echo "Ida y vuelta: \n";
+    $idaVuelta = ida_Vuelta();
     echo "Ingrese el responsable del viaje: \n";
     $objResponsable = ingresarResponsable();
+    
+
     $n_pasajeros = $arr;
-    $n_viaje = new Viaje($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable);
+    $n_viaje = new Viaje($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta);
     return $n_viaje;
 };
+
+/**
+ * Pide si el viaje es ida y vuelta
+ * Retorna un boolean
+ */
+function ida_Vuelta(){
+    echo "si / no \n";
+    $respuesta = strtoupper(trim(fgets(STDIN)));
+    if ($respuesta == "SI") {
+        $ida_y_vuelta = true;
+    }else {
+        $ida_y_vuelta = false;
+    }
+    return $ida_y_vuelta;
+}
 
 /**
  * Pide los datos del responsable del viaje y crea el objeto Responsable.
@@ -101,9 +125,18 @@ function mostrarPasajeros($arr){
  * Recibe un objeto Viaje y muestra por pantalla todos los datos del viaje
  */
 function mostrarViaje($viaje){
+
+    if ($viaje->getIdayVuelta()) {
+        $viajeIdaVuelta = "Si";
+    }else {
+        $viajeIdaVuelta = "No";
+    }
+
     echo "Código de viaje:  {$viaje->getCodigo()} \n";
     echo "Destino de viaje: {$viaje->getDestino()}.\n";
     echo "Cantidad máxima de pasajeros: {$viaje->getCantidadMax()}.\n";
+    echo "Ida y Vuelta: " . $viajeIdaVuelta . "\n";
+    echo "Importe: $" . $viaje->getImporte() . "\n";
     echo "Responsable del viaje: {$viaje->getObjResponsable()}\n";
     echo "-----*-----\n";
 }
