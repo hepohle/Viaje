@@ -8,10 +8,11 @@ class Viaje{
     private $pasajerosDelViaje = [];
     private $objResponsable;
     private $importe;
+    private $tipoAsiento;
     private $idayVuelta; //boolean
 
 //CONSTRUCTOR
-    public function __construct($codigo, $destino, $cantidadMax, $pasajerosDelViaje, $objResponsable, $importe, $idayVuelta)
+    public function __construct($codigo, $destino, $cantidadMax, $pasajerosDelViaje, $objResponsable, $importe, $tipoAsiento, $idayVuelta)
     {
        $this->codigo = $codigo;
        $this->destino = $destino;
@@ -19,6 +20,7 @@ class Viaje{
        $this->pasajerosDelViaje = $pasajerosDelViaje;
        $this->objResponsable = $objResponsable;
        $this->importe = $importe;
+       $this->tipoAsiento = $tipoAsiento;
        $this->idayVuelta = $idayVuelta;
     }
 
@@ -80,6 +82,14 @@ class Viaje{
         $this->importe = $importe;
     }
 
+    public function getTipoAsiento(){
+        return $this->tipoAsiento;
+    }
+
+    public function setTipoAsiento($tipoAsiento){
+        $this->tipoAsiento = $tipoAsiento;
+    }
+
     public function getIdayVuelta()
     {
         return $this->idayVuelta;
@@ -105,6 +115,7 @@ class Viaje{
         "Pasajeros: " . $this->getPasajerosDelViaje() . "\n" .
         "Ida y Vuelta: ". $viajeIdaVuelta . "\n" . 
         "Importe: $" . $this->getImporte() . "\n" .
+        "Tipo de Asiento: " . $this->getTipoAsiento() . "\n" .
         "Responsable: " . $this->getObjResponsable() . "\n";
         
         return $cadena;
@@ -218,16 +229,36 @@ class Viaje{
         return $posicion;
     }
 
-    public function hayPasajesDisponible($cantPasajes)
-    {
-        $hayLugar = false;
-        $cantPasajeros = count($this->getPasajerosDelViaje());
-        $totalPasajeros = $cantPasajeros + $cantPasajes;
-        $cantAsientos = count($this->getCantidadMax());
-        if ($totalPasajeros < $cantAsientos) {
-            $hayLugar = true;
+    // public function hayPasajesDisponible($cantPasajes)
+    // {
+    //     $hayLugar = false;
+    //     $cantPasajeros = count($this->getPasajerosDelViaje());
+    //     $totalPasajeros = $cantPasajeros + $cantPasajes;
+    //     $cantAsientos = count($this->getCantidadMax());
+    //     if ($totalPasajeros < $cantAsientos) {
+    //         $hayLugar = true;
+    //     }
+    //     return $hayLugar;
+    // }
+
+    public function hayPasajesDisponibles(){
+        $pasajes = false;
+        if (count($this->getPasajerosDelViaje()) < $this->getCantidadMax()) {
+            $pasajes = true;
         }
-        return $hayLugar;
+        return $pasajes;
+    }
+
+    public function venderPasaje($objPasajero){
+        $importe = null;
+        if ($this->hayPasajesDisponibles()) {
+            $this->agregarPasajero($objPasajero);
+            $importe = $this->getImporte();
+            if ($this->getIdayVuelta()) {
+                $importe = $importe * 1.5;
+            }
+        }
+        return $importe;
     }
 
 }

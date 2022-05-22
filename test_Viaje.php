@@ -1,8 +1,8 @@
 <?php
-require_once ("Empresa.php");
+
 require_once ("Viaje.php");
-require_once ("ViajeTerrestre.php");
-require_once ("ViajeAereo.php");
+require_once ("Terrestre.php");
+require_once ("Aereo.php");
 require_once ("Pasajero.php");
 require_once ("ResponsableV.php");
 
@@ -25,22 +25,16 @@ $objResponsable2 = new ResponsableV(2, 222, "Juan", "Mendez");
 $objResponsable3 = new ResponsableV(3, 321, "Luis", "Paez");
 
 // Creacion de un nuevo objeto Viaje de muestra
-$objViaje1 = new ViajeTerrestre(125, "Bariloche", 55, $coleccionPasajeros1, $objResponsable1, 2000, true, "Cama");
-$objViaje2 = new ViajeTerrestre(111, "Cordoba", 30, $coleccionPasajeros2, $objResponsable2, 3500, false, "Semicama");
-$objViaje3 = new ViajeAereo(333, "Buenos Aires", 40, $coleccionPasajeros3, $objResponsable3, 15000, true, 12345, "Primera Clase", "Latam", 2);
+$objViaje1 = new Terrestre(125, "Bariloche", 55, $coleccionPasajeros1, $objResponsable1, 2000, "Cama", true);
+$objViaje2 = new Terrestre(111, "Cordoba", 30, $coleccionPasajeros2, $objResponsable2, 3500, "Semicama", false);
+$objViaje3 = new Aereo(333, "Buenos Aires", 40, $coleccionPasajeros3, $objResponsable3, 15000, "Primera Clase", true, 12345, "Latam", 2);
 
 
 // Coleccion de viajes
 $coleccionViajes = [$objViaje1, $objViaje2, $objViaje3];
 
-// Array con los pasajeros del viaje.
-$listaPasajeros = $objViaje1->getPasajerosDelViaje();
-
-// Creacion objeto Empres
-$objEmpresa = new Empresa("Viaje Feliz");
-
-// SET Coleccion de Viajes
-$objEmpresa->setColeccionViajes($coleccionViajes);
+$importeViaje = $objViaje1->venderPasaje($pasajero1);
+echo $importeViaje;
 
 // FUNCION CREAR NUEVO VIAJE
 function nuevoViaje($arr){
@@ -72,11 +66,11 @@ function nuevoViaje($arr){
         echo "Aerolinea: \n";
         $nombreAerolinea = trim(fgets(STDIN));
         
-        $n_viaje = new ViajeAereo($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta, $nro_vuelo, $catVuelo, $nombreAerolinea, $escalasVuelo);
+        $n_viaje = new Aereo($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta, $nro_vuelo, $catVuelo, $nombreAerolinea, $escalasVuelo);
     }elseif ($tipoViaje == "terrestre") {
        echo "Tipo de asiento: (Cama / Semi-cama)\n";
        $tipoAsiento = trim(fgets(STDIN));
-       $n_viaje = new ViajeTerrestre($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta, $tipoAsiento); 
+       $n_viaje = new Terrestre($n_codigo, $n_destino, $n_cantMax, $n_pasajeros, $objResponsable, $viajeMonto, $idaVuelta, $tipoAsiento); 
     }
     return $n_viaje;
 };
